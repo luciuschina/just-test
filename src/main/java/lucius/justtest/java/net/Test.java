@@ -1,4 +1,4 @@
-package com.haozhuo.lucius.justtest.java.net;
+package lucius.justtest.java.net;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;

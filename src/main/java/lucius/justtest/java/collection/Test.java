@@ -1,4 +1,4 @@
-package com.haozhuo.lucius.justtest.java.collection;
+package lucius.justtest.java.collection;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -20,6 +20,7 @@ public class Test {
         List<String> immutableList = Collections.unmodifiableList(Arrays.asList("11", "212"));
         System.out.println(immutableList.get(0)); // 11
         immutableList.add("1"); // Exception in thread "main" java.lang.UnsupportedOperationException
-
     }
+
+
 }
