@@ -9,27 +9,43 @@ import java.util.concurrent.TimeUnit;
  *  如果创建的对象是继承Thread类的线程，多个线程不会共享相同的属性。
  *
  *  例如下面程序会有以下输出：
- *  Threads which use the same runnable task instance: 
- *  Starting Thread: 9 , count: 0
- *  Starting Thread: 10 , count: 1
- *  Starting Thread: 11 , count: 2
- *
- *  Threads which use different runnable task instances:
- *  Starting Thread: 12 , count: 0
- *  Starting Thread: 13 , count: 0
- *  Starting Thread: 14 , count: 0
- *
- *  Threads which extends Thread class test:
- *  Starting Thread: 15 , count: 0
- *  Starting Thread: 16 , count: 0
- *  Starting Thread: 17 , count: 0
+ Threads which use the same runnable task instance:
+ Starting Thread: 9 , count: 0
+ Starting Thread: 10 , count: 1
+ Starting Thread: 11 , count: 2
+
+ Threads which use the same runnable task instances, in the task use ThreadLocal:
+ Starting Thread: 12 , count: 0
+ Starting Thread: 13 , count: 0
+ Starting Thread: 14 , count: 0
+
+ Threads which use different runnable task instances:
+ Starting Thread: 15 , count: 0
+ Starting Thread: 16 , count: 0
+ Starting Thread: 17 , count: 0
+
+ Threads which extends Thread class test:
+ Starting Thread: 18 , count: 0
+ Starting Thread: 19 , count: 0
+ Starting Thread: 20 , count: 0
  */
 public class ThreadSharedVariableApp {
     public static void main(String[] args) {
         System.out.println("\nThreads which use the same runnable task instance: ");
-        RunnableTask task = new RunnableTask();
+        UnsafeTask task = new UnsafeTask();
         for (int i = 0; i < 3; i++) {
             Thread thread = new Thread(task);
+            thread.start();
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        System.out.println("\nThreads which use the same runnable task instances, in the task use ThreadLocal: ");
+        SafeTask safeTask = new SafeTask();
+        for (int i = 0; i < 3; i++) {
+            Thread thread = new Thread(safeTask);
             thread.start();
             try {
                 TimeUnit.SECONDS.sleep(2);
@@ -40,7 +56,7 @@ public class ThreadSharedVariableApp {
 
         System.out.println("\nThreads which use different runnable task instances: ");
         for (int i = 0; i < 3; i++) {
-            Thread thread = new Thread(new RunnableTask());
+            Thread thread = new Thread(new UnsafeTask());
             thread.start();
             try {
                 TimeUnit.SECONDS.sleep(2);
