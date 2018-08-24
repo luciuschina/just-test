@@ -9,11 +9,11 @@ import java.io.PrintWriter;
  */
 public class ThreadPriorityApp {
     private static void writeThreadInfo(PrintWriter pw, Thread thread, Thread.State state) {
-        pw.printf("Main: Id %d - %s\n", thread.getId(), thread.getName());
-        pw.printf("Main: Priority: %d\n", thread.getPriority());
-        pw.printf("Main: Old State: %s\n", state);
-        pw.printf("Main: New State: %s\n", thread.getState());
-        pw.printf("Main: ********************** \n");
+        pw.printf("ReentrantLockMain: Id %d - %s\n", thread.getId(), thread.getName());
+        pw.printf("ReentrantLockMain: Priority: %d\n", thread.getPriority());
+        pw.printf("ReentrantLockMain: Old State: %s\n", state);
+        pw.printf("ReentrantLockMain: New State: %s\n", thread.getState());
+        pw.printf("ReentrantLockMain: ********************** \n");
     }
 
     public static void main(String[] args) {
@@ -35,7 +35,7 @@ public class ThreadPriorityApp {
             FileWriter file = new FileWriter("./src/main/tmp/threadPriorityApp.log");
             PrintWriter pw = new PrintWriter(file);
             for (int i = 0; i < 10; i++) {
-                pw.println("Main: Status of Thread" + i + " : " + threads[i].getState());
+                pw.println("ReentrantLockMain: Status of Thread" + i + " : " + threads[i].getState());
                 status[i] = threads[i].getState();
             }
 

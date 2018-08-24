@@ -23,6 +23,6 @@ public class ThreadJoinApp {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.printf("Main: Configuration has been loaded: %s\n", new Date());
+        System.out.printf("ReentrantLockMain: Configuration has been loaded: %s\n", new Date());
     }
 }
