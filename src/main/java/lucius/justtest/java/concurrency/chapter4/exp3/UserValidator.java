@@ -1,4 +1,4 @@
-package lucius.justtest.java.concurrency.chapter4.callable.exp2;
+package lucius.justtest.java.concurrency.chapter4.exp3;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;

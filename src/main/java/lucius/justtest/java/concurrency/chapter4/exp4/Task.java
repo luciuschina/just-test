@@ -1,4 +1,4 @@
-package lucius.justtest.java.concurrency.chapter4.callable.exp3;
+package lucius.justtest.java.concurrency.chapter4.exp4;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;

@@ -1,4 +1,4 @@
-package lucius.justtest.java.concurrency.chapter4.executor.exp1;
+package lucius.justtest.java.concurrency.chapter4.exp1;
 
 /**
  * Created by Lucius on 9/1/18.

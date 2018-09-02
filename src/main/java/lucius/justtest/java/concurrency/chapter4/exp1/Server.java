@@ -1,4 +1,4 @@
-package lucius.justtest.java.concurrency.chapter4.executor.exp1;
+package lucius.justtest.java.concurrency.chapter4.exp1;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
