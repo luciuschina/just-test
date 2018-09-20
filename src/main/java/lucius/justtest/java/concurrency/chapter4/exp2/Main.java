@@ -30,10 +30,10 @@ public class Main {
             resultList.add(result);
         }
         do {
-            System.out.printf("Main: Number of Completed Tasks:%d\n", executor.getCompletedTaskCount());
+            System.out.printf("DemosFromMyProjects: Number of Completed Tasks:%d\n", executor.getCompletedTaskCount());
             for (int i = 0; i < resultList.size(); i++) {
                 Future<Integer> result = resultList.get(i);
-                System.out.printf("Main： Task %d: %s\n", i, result.isDone());
+                System.out.printf("DemosFromMyProjects： Task %d: %s\n", i, result.isDone());
 //                try {
 //                    System.out.println(result.get(1,TimeUnit.MILLISECONDS));
 //                } catch (InterruptedException e) {
@@ -50,7 +50,7 @@ public class Main {
                 e.printStackTrace();
             }
         } while (executor.getCompletedTaskCount() < resultList.size());
-        System.out.printf("Main: Results\n");
+        System.out.printf("DemosFromMyProjects: Results\n");
         for (int i = 0; i < resultList.size(); i++) {
             Future<Integer> result = resultList.get(i);
             Integer number = null;
@@ -61,7 +61,7 @@ public class Main {
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-            System.out.printf("Main: Task %d: %d\n", i, number);
+            System.out.printf("DemosFromMyProjects: Task %d: %d\n", i, number);
         }
     }
 }

@@ -25,7 +25,7 @@ public class Main {
             e.printStackTrace();
         }
         executor.shutdown();
-        System.out.println("Main: Printing the results");
+        System.out.println("DemosFromMyProjects: Printing the results");
         for (int i = 0; i < resultList.size(); i++) {
             Future<Result> future = resultList.get(i);
             try {

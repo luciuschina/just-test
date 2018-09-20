@@ -26,7 +26,7 @@ public class Main {
          */
         executor.setExecuteExistingDelayedTasksAfterShutdownPolicy(true);
 
-        System.out.printf("Main: Starting at: %s\n", new Date());
+        System.out.printf("DemosFromMyProjects: Starting at: %s\n", new Date());
         for (int i = 0; i < 10; i++) {
             Task task = new Task("Task_"+i);
             executor.schedule(task, i+1, TimeUnit.SECONDS);//重点！！ 轮到该任务执行时，需要等待1s钟再执行
@@ -43,6 +43,6 @@ public class Main {
             e.printStackTrace();
         }
 
-        System.out.printf("Main: Ends at:%s\n", new Date());
+        System.out.printf("DemosFromMyProjects: Ends at:%s\n", new Date());
     }
 }

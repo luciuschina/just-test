@@ -14,13 +14,13 @@ public class Main {
     public static void main(String[] args) {
         //ScheduledExecutorService是一个interface，ScheduledThreadPoolExecutor是一个class
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        System.out.printf("Main: Starting at: %s \n", new Date());
+        System.out.printf("DemosFromMyProjects: Starting at: %s \n", new Date());
         Task task = new Task("Task");
         System.out.printf("=============\n", new Date());
         ScheduledFuture<?> result = executor.scheduleAtFixedRate(task, 1, 2, TimeUnit.SECONDS);//第一次延迟1s，后面每隔2s执行一次
         for (int i = 0; i < 10; i++) {
             //getDelay()方法返回任务到下一次执行时还需要的等待时间
-            System.out.printf("Main: Delay: %d\n", result.getDelay(TimeUnit.MILLISECONDS));
+            System.out.printf("DemosFromMyProjects: Delay: %d\n", result.getDelay(TimeUnit.MILLISECONDS));
             try {
                 TimeUnit.MILLISECONDS.sleep(500);
             } catch (InterruptedException e) {
@@ -34,6 +34,6 @@ public class Main {
             e.printStackTrace();
         }
         executor.shutdown();
-        System.out.printf("Main: Finished at: %s \n", new Date());
+        System.out.printf("DemosFromMyProjects: Finished at: %s \n", new Date());
     }
 }

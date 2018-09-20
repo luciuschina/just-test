@@ -15,14 +15,14 @@ public class Main {
     public static void main(String[] args) {
         ThreadPoolExecutor executor = (ThreadPoolExecutor) Executors.newCachedThreadPool();
         Task task = new Task();
-        System.out.printf("Main: Executing the Task\n");
+        System.out.printf("DemosFromMyProjects: Executing the Task\n");
         Future<String> result = executor.submit(task);
         try {
             TimeUnit.SECONDS.sleep(2);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.printf("Main: Canceling the Task\n");
+        System.out.printf("DemosFromMyProjects: Canceling the Task\n");
         /*
         如果想取消一个已经发送给执行器的任务，可以使用Future接口的cancel()方法。
         根据调用cancel()方法所传递的参数以及任务的状态，这个方法写得行为有些不同。
@@ -33,9 +33,9 @@ public class Main {
             如果传递的参数为false，并且任务在运行，那么任务不会被取消。
          */
         result.cancel(true); //重点！！！
-        System.out.printf("Main: cancelled:%s\n", result.isCancelled());
-        System.out.printf("Main: Done:%s\n", result.isDone());
+        System.out.printf("DemosFromMyProjects: cancelled:%s\n", result.isCancelled());
+        System.out.printf("DemosFromMyProjects: Done:%s\n", result.isDone());
         executor.shutdown();
-        System.out.printf("Main: The executor has finished\n");
+        System.out.printf("DemosFromMyProjects: The executor has finished\n");
     }
 }

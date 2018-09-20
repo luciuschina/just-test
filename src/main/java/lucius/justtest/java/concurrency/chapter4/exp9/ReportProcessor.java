@@ -16,7 +16,6 @@ public class ReportProcessor implements Runnable {
         end = false;
     }
 
-    @Override
     public void run() {
         while(!end) {
             try {
@@ -25,7 +24,7 @@ public class ReportProcessor implements Runnable {
                     String report = result.get();
                     System.out.printf("ReportReceiver: Report Received: %s\n",report);
                 }
-            } catch (InterruptedException | ExecutionException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

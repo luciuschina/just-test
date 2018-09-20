@@ -38,18 +38,18 @@ public class Main {
         ReportProcessor processor = new ReportProcessor(completionService);
         Thread receiveThread = new Thread(processor); //接收报告的线程
 
-        System.out.printf("Main: Starting the Threads\n");
+        System.out.printf("DemosFromMyProjects: Starting the Threads\n");
         faceThread.start();
         onlineThread.start();
         receiveThread.start();
         try {
-            System.out.println("Main: waiting for the report generators");
+            System.out.println("DemosFromMyProjects: waiting for the report generators");
             faceThread.join();
             onlineThread.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.printf("Main: Shtting down the executor. \n");
+        System.out.printf("DemosFromMyProjects: Shtting down the executor. \n");
         executor.shutdown();
         try {
             executor.awaitTermination(1, TimeUnit.DAYS);
@@ -57,6 +57,6 @@ public class Main {
             e.printStackTrace();
         }
         processor.setEnd(true);
-        System.out.printf("Main: Ends");
+        System.out.printf("DemosFromMyProjects: Ends");
     }
 }

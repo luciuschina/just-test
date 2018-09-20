@@ -30,13 +30,13 @@ public class Main {
         String result;
         try {
             result = executor.invokeAny(taskList); //重点！！返回第一个成功执行完的任务的结果
-            System.out.printf("Main: Result: %s\n", result);
+            System.out.printf("DemosFromMyProjects: Result: %s\n", result);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
         executor.shutdown();
-        System.out.printf("Main: End of Execution");
+        System.out.printf("DemosFromMyProjects: End of Execution");
     }
 }
