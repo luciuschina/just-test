@@ -16,7 +16,7 @@ import java.nio.channels.FileChannel;
  */
 public class FileChannelExample {
     public static void main(String[] args) throws IOException {
-        RandomAccessFile file = new RandomAccessFile("docs/java/nio/JavaNIOTutorial.md", "r");
+        RandomAccessFile file = new RandomAccessFile("docs/tmp/read.txt", "r");
         FileChannel fileChannel = file.getChannel();
         ByteBuffer byteBuffer = ByteBuffer.allocate(512);
         // fileChannel.read(byteBuffer): Reads a sequence of bytes from this channel into the given buffer
