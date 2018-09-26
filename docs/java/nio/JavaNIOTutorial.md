@@ -1,4 +1,8 @@
-# [Java NIO Tutorial](https://javapapers.com/java/java-nio-tutorial/)
+# Java NIO Tutorial
+参考资料：
+https://javapapers.com/java/java-nio-tutorial/
+https://howtodoinjava.com/java-nio-tutorials/
+https://www.javatpoint.com/java-nio
 
 #### 标准IO和NIO之间的不同：
 首先，标准IO是基于流的，NIO是面向buffer的。面向Buffer的操作处理数据比较灵活，数据首先读取到缓存中，然后进行处理，所以Buffer中的数据可以反复被读取，而基于流的IO操作就不能这样操作。
@@ -21,7 +25,7 @@
 * SocketChannel：SocketChannel, ServerSocketChannel 和 DatagramChannel，可在非阻塞的模式下操作。
 
 #### 例子
-```
+```java
 public class FileChannelExample {
     public static void main(String[] args) throws IOException {
         RandomAccessFile file = new RandomAccessFile("docs/java/nio/JavaNIOTutorial.md", "r");
@@ -94,36 +98,36 @@ position被设为0，mark被丢弃(设为-1), limit被设为position。写完准
 
 #### 如何从NIO Buffer读取数据
 1. 创建一个buffer，并设置capacity
-```
+```java
 ByteBuffer byteBuffer = ByteBuffer.allocate(512);
 ```
 2. 对buffer进行flip(),准备读
-```
+```java
 byteBuffer.flip();
 ```
 3. 从channel中将数据读到buffer中
-```
+```java
 int numberOfBytes = fileChannel.read(byteBuffer);
 ```
 4. 从buffer中读取数据
-```
+```java
 char c = (char)byteBuffer.get();
 ```
 
 #### 如何将数据写入NIO Buffer
 1. 创建一个buffer，并设置capacity
-```
+```java
 ByteBuffer byteBuffer = ByteBuffer.allocate(512);
 ```
 2. 将数据放入Buffer中
-```
+```java
 byteBuffer.put((byte) 0xff);
 ```
 
 上面两个例子只是从Buffer中进行读写的简单例子。实际上有各种Buffer可用，各种各样的读/写方法。需要根据自己需求来选择。
 
 #### NIO Buffer Read Write例子
-```
+```java
 public class BufferExample {
 	public static void main(String[] args) throws IOException {
 		Path path = Paths.get("temp.txt");
@@ -152,3 +156,175 @@ public class BufferExample {
 	}
 }
 ```
+
+## Java NIO Path
+本节我们将看一下Java NIO中的Path和File。Path是文件IO处理的第一步。File存储在磁盘或者文件系统上。在当今的操作系统中基于树形结构的文件系统很流行。树形结构起始于一个root节点以及分支。Windows操作系统中有多个root节点(C:,D:)。
+path可以唯一确定文件系统中的一个文件。有两种类型的paths：相对路径和绝对路径。
+
+#### java.nio.file.Path
+java.nio.file.Path是一个interface，可用于确定文件系统中的文件。
+
+###### 如何创建一个file path？
+以下例子是实例化一个file (relative) path, "lib"是相对于当前目录的一个目录，"nio.jar"该目录下面的文件名称。
+以下四句相等。Paths.get(...)的内部实现就是FileSystems.getDefault().getPath(...)
+```java
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
+
+Path path1 = FileSystems.getDefault().getPath("lib", "nio.jar");
+Path path2 = FileSystems.getDefault().getPath("lib/nio.jar");
+Path path3 = Paths.get("lib/nio.jar");
+Path path4 = Paths.get("lib","nio.jar");
+```
+
+###### 获取当前path
+以下代码返回当前路径的绝对路径
+```java
+Path currnetDirectory = Paths.get("").toAbsolutePath();
+```
+
+###### 拼接路径
+```java
+Path path5 = Paths.get("docs/tmp");
+//输出：docs/tmp/Test.java
+System.out.println(path5.resolve("Test.java"));
+```
+
+###### 标准化路径
+```java
+Path path8 = Paths.get("/data//work/./luciuschina/just-test/docs/tmp");
+//输出：/data/work/luciuschina/just-test/docs/tmp
+System.out.println(path8.normalize());
+```
+
+
+## Scatter/Gather or Vectored I/O
+在Java NIO中，Channel提供了一个重要的能力，被称为scatter/gatter或者Vectored I/O。它是一个简单而强大的功能。可以使用write()方法将一组buffers中的数据写入到一个channel中，或者使用read()方法将一个channel中的数据读取到一组buffers中。
+
+#### Scattering Reads
+“scattering read”用于从单个channel中读取数据到多个buffers中。
+
+![image](https://www.javatpoint.com/core/javanio/images/nio-tutorial11.png)
+
+#### Gathering Writes
+“gathering write”用于将数据从多个buffers中写入到单个channel中。
+
+![image](https://www.javatpoint.com/core/javanio/images/nio-tutorial12.png)
+
+#### Basic Scatter/Gather Example
+
+```java
+public class ScatterGatherExample {
+    public static void main(String[] args) throws IOException {
+        String data = "Scattering and Gathering examples!";
+        String file = "docs/tmp/write.txt";
+        gatherBytes(file, data);
+        scatterBytes(file);
+    }
+
+    //scatterBytes() is used for reading the bytes from a file channel into a set of buffers.
+    public static void scatterBytes(String file) {
+        //The First Buffer is used for holding a random number
+        ByteBuffer buffer1 = ByteBuffer.allocate(8);
+        //The Second Buffer is used for holding a data that we want to write
+        ByteBuffer buffer2 = ByteBuffer.allocate(400);
+        ScatteringByteChannel scatter = createChannelInstance(file, false);
+        //Reading a data from the channel
+        try {
+            scatter.read(new ByteBuffer[]{buffer1, buffer2});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //Read the two buffers seperately
+        buffer1.rewind();
+        buffer2.rewind();
+
+        int bufferOne = buffer1.asIntBuffer().get();
+        String bufferTwo = buffer2.asCharBuffer().toString();
+        //Verification of content
+        System.out.println(bufferOne);
+        System.out.println(bufferTwo);
+    }
+
+    //gatherBytes() is used for reading the bytes from the buffers and write it to a file channel
+    public static void gatherBytes(String file, String data) throws IOException {
+        //The First Buffer is used for holding a random number
+        ByteBuffer buffer1 = ByteBuffer.allocate(8);
+        //The Second Buffer is used for holding a data that we want to write
+        ByteBuffer buffer2 = ByteBuffer.allocate(400);
+        buffer1.asIntBuffer().put(420);
+        buffer2.asCharBuffer().put(data);
+        GatheringByteChannel gatherer = createChannelInstance(file, true);
+
+        //write the data into file
+        try {
+            gatherer.write(new ByteBuffer[]{buffer1, buffer2});
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static FileChannel createChannelInstance(String file, boolean isOutput) {
+        FileChannel fileChannel = null;
+        try {
+            if (isOutput) {
+                fileChannel = new FileOutputStream(file).getChannel();
+                //fileChannel = FileChannel.open(Paths.get(file), StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+            } else {
+                fileChannel = new FileInputStream(file).getChannel();
+                //fileChannel = FileChannel.open(Paths.get(file));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return fileChannel;
+    }
+}
+
+```
+
+## Data Transfer between Channels
+如果两个Channel中其中一个是FileChannel，那么直接可以从Channel到Channel传输数据。这种传输方式是经过优化的，效率较高。
+FileChannel类中有以下两个方法，用于channels间的数据传输：
+1. FileChannel.transferTo()方法
+2. FileChannel.transferFrom()方法
+
+#### Basic Channel to Channel Data Transfer Example
+```java
+public class ChannelToChannelTransferExample {
+    public static void main(String[] args) throws Exception {
+        WritableByteChannel targetChannel = FileChannel.open(Paths.get("docs/tmp/inputJoin.txt"),
+                StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+
+        String[] inputFiles = new String[]{"docs/tmp/input1.txt", "docs/tmp/input2.txt"};
+        stream(inputFiles).forEach(file -> {
+            try {
+                FileChannel inputChannel = FileChannel.open(Paths.get(file));
+                inputChannel.transferTo(0, inputChannel.size(), targetChannel);
+                inputChannel.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        targetChannel.close();
+    }
+}
+```
+
+## Java NIO Selector
+在Java NIO中selector类似于一个多路复用器，用于管理多个channels，这些channel处于非阻塞模式。selector可以检查一个或多个channels，并且决定哪个channel准备进行通信,例如读或写。
+
+#### Selector的用处是什么
+selector使用单个线程管理多个channels，因此只需要很少的线程就能管理这些channels。操作系统切换线程的开销是昂贵的。因此使用selector可以提升系统的性能。
+下图展示了一个线程使用Selector来处理3个Channels：
+
+![在这里插入图片描述](https://www.javatpoint.com/core/javanio/images/nio-tutorial13.png)
+
+#### 创建一个Selector
+我们可以通过调用Selector.open()方法来创建一个Selector,如下：
+
+```java
+Selector selector = Selector.open();
+```
+

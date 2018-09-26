@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 /**
+ * https://javapapers.com/java/java-nio-buffer/
+ *
  * Created by Lucius on 9/25/18.
  */
 public class ReadWriteExample {
@@ -20,8 +22,7 @@ public class ReadWriteExample {
         String input = "NIO Buffer Hello World!\nNetty";
         byte[] inputBytes = input.getBytes();
         ByteBuffer byteBuffer = ByteBuffer.wrap(inputBytes);
-        FileChannel channelWrite = FileChannel.open(path,
-                StandardOpenOption.CREATE, StandardOpenOption.WRITE);
+        FileChannel channelWrite = FileChannel.open(path, StandardOpenOption.CREATE, StandardOpenOption.WRITE);
         channelWrite.write(byteBuffer);
         channelWrite.close();
     }

@@ -18,13 +18,13 @@ public class DecoderExample {
     public static void main(String[] args) throws IOException {
 
         CharsetDecoder decoder = Charset.forName("UTF-8").newDecoder();
-        Path path = Paths.get("docs/tmp/read.txt");
+        Path path = Paths.get("docs/tmp", "read.txt");
         FileChannel fileChannel = FileChannel.open(path);
         //上面那句效果好像跟这句一样：FileChannel fileChannel = FileChannel.open(path, StandardOpenOption.READ);
         ByteBuffer byteBuffer = ByteBuffer.allocate(512);
         CharBuffer charBuffer = CharBuffer.allocate(512);
 
-        while (fileChannel.read(byteBuffer)>0) {
+        while (fileChannel.read(byteBuffer) > 0) {
             byteBuffer.flip();
             decoder.decode(byteBuffer, charBuffer, false);
             charBuffer.flip();
